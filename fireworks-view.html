@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="fireworks-view.css">
+  <title>Cutie Ahlia</title>
+  <style>
+    /* Fixed Background */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: url('your-background-image.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column; /* Align items vertically */
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Flex Container to Align Button and Messages Horizontally */
+    .horizontal-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px; /* Space between button and messages */
+    }
+
+    /* Button Styling with Rotation */
+    #play-music {
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      animation: fadeIn 2s ease-in-out;
+      z-index: 10;
+      transform: rotate(90deg); /* Rotate the button */
+      transition: transform 0.5s ease-in-out;
+    }
+
+    /* Rotate the button on hover */
+    #play-music:hover {
+      transform: rotate(90deg); /* Rotate the button on hover */
+    }
+
+    /* Fade-In Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Message Styling */
+    .message-container {
+      display: none;
+      position: relative;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      z-index: 10;
+      transform: rotate(90deg); /* Rotate the message container */
+      transition: transform 0.5s ease-in-out;
+    }
+
+    /* Message Fade-In/Out Animation */
+    @keyframes messageFade {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .message {
+      animation: messageFade 5s ease-in-out forwards;
+    }
+
+    /* Responsive Design for Smaller Screens */
+    @media (max-width: 600px) {
+      #play-music {
+        font-size: 16px;
+        padding: 12px 24px;
+      }
+
+      .message {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Music -->
+  <audio id="background-music" loop>
+    <source src="ey.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Horizontal Container for Button and Messages -->
+  <div class="horizontal-container">
+    <!-- Play Music Button -->
+    <button id="play-music">Play Music</button>
+
+    <!-- Message Container -->
+    <div class="message-container" id="message-container"></div>
+  </div>
+
+  <!-- Fireworks Container -->
+  <div id="jsi-fireworks-container" class="container"></div>
+
+  <!-- jQuery and Fireworks Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Ensure jQuery is linked properly -->
+  <script src="fireworks-view.js"></script>
+
+  <script>
+    const playButton = document.getElementById('play-music');
+    const messageContainer = document.getElementById('message-container');
+    const music = document.getElementById('background-music');
+
+    // Sentences to display
+    const messages = [
+      "Hi, love. Happy New Year!",
+      "I hope this year brings us even closer together.",
+      "I’m so grateful to have you in my life, and I can’t wait to make more memories with you.",
+      "My love, I adore you deeply. You will always be my star, shining bright in my heart."
+    ];
+
+    // Play button click event
+    playButton.addEventListener('click', () => {
+      playButton.style.display = 'none'; // Hide the button
+      music.play().catch(error => {
+        console.error('Error playing music:', error);
+      });
+      displayMessages(messages);
+    });
+
+    // Function to display messages one by one
+    function displayMessages(sentences) {
+      let index = 0;
+
+      function showNextMessage() {
+        if (index < sentences.length) {
+          const messageElement = document.createElement('div');
+          messageElement.classList.add('message');
+          messageElement.textContent = sentences[index];
+          messageContainer.appendChild(messageElement);
+          messageContainer.style.display = 'block';
+
+          // After the last message fades out, show the next one
+          setTimeout(() => {
+            messageContainer.style.display = 'none';
+            index++;
+            if (index < sentences.length) {
+              showNextMessage();
+            }
+          }, 5000); // Wait for the full duration of the message animation (5s)
+        }
+      }
+
+      showNextMessage();
+    }
+  </script>
+</body>
+</html>
